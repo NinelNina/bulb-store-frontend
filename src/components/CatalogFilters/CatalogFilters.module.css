@@ -1,0 +1,18 @@
+.catalogFilters {
+  padding: 24px !important;
+}
+@media (min-width: 900px) {
+  .catalogFilters {
+    position: sticky;
+    top: 100px;
+  }
+}
+.filterSection {
+  margin-bottom: 24px !important;
+}
+.filterLabel {
+  margin-bottom: 8px !important;
+}
+.filterGroup {
+  gap: 4px !important;
+}

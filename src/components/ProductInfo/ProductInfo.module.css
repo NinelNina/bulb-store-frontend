@@ -1,0 +1,31 @@
+.productInfoContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.productInfoTitle {
+  font-weight: 800 !important;
+  margin-bottom: 16px !important;
+}
+.quantityPicker {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.quantityControls {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+.quantityValue {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-left: 1px solid #d1d5db;
+  border-right: 1px solid #d1d5db;
+  min-width: 40px;
+  text-align: center;
+}

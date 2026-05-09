@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { mockProducts } from "../data/mock";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { fetchProducts, fetchCategories } from "../redux/productActions";
 import {
   Box, Typography, TextField, InputAdornment, Grid, Paper, Pagination
 } from "@mui/material";
@@ -7,71 +8,86 @@ import SearchIcon from "@mui/icons-material/Search";
 import { ProductCard } from "../components/ProductCard/ProductCard";
 import { CatalogFilters, FilterState } from "../components/CatalogFilters/CatalogFilters";
 import { useSearchParams } from "react-router-dom";
+import styles from './CatalogPage.module.css';
 
 export function CatalogPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState<FilterState>({
-    types: [],
-    bases: [],
-    power: 'any',
-    colors: [],
-    brightness: 'any',
-    shapes: [],
-    purposes: []
+    category: '',
+    base: '',
+    minPower: '',
+    maxPower: '',
+    color: '',
+    minBrightness: '',
+    maxBrightness: '',
+    minPrice: '',
+    maxPrice: '',
+    shape: ''
   });
 
-  useEffect(() => {
-    const category = searchParams.get('category');
-    if (category === 'home') {
-      setFilters(prev => ({ ...prev, purposes: ['Дом'], bases: ['E27', 'E14'] }));
-    } else if (category === 'industrial') {
-      setFilters(prev => ({ ...prev, purposes: ['Производство'], bases: ['G13'] }));
-    }
-  }, [searchParams]);
+  const dispatch = useAppDispatch();
+  const products = useAppSelector(state => state.products.items);
+  const categories = useAppSelector(state => state.products.categories);
+  const status = useAppSelector(state => state.products.status);
+
+  const [facets, setFacets] = useState({
+    bases: [] as string[],
+    shapes: [] as string[],
+    colors: [] as string[]
+  });
 
   const [page, setPage] = useState(1);
   const itemsPerPage = 20;
 
-  // Filter logic
-  const filteredProducts = mockProducts.filter(p => {
-    // Search
-    if (search && !p.name.toLowerCase().includes(search.toLowerCase())) return false;
+  useEffect(() => {
+    dispatch(fetchCategories());
+    dispatch(fetchProducts({ size: 200 })).then((res: any) => {
+      if (res && Array.isArray(res)) {
+        setFacets({
+          bases: Array.from(new Set(res.map((p: any) => p.socket).filter(Boolean))),
+          shapes: Array.from(new Set(res.map((p: any) => p.shape).filter(Boolean))),
+          colors: Array.from(new Set(res.map((p: any) => String(p.color_temperature)).filter(Boolean)))
+        });
+      }
+    });
+  }, [dispatch]);
 
-    // Purposes
-    if (filters.purposes.length > 0 && !p.purpose.some(purpose => filters.purposes.includes(purpose))) return false;
+  useEffect(() => {
+    const apiParams: any = {
+      page: page,
+      size: itemsPerPage,
+      q: search || undefined,
+      categoryId: filters.category || undefined,
+      socket: filters.base || undefined,
+      minPower: filters.minPower ? parseInt(filters.minPower) : undefined,
+      maxPower: filters.maxPower ? parseInt(filters.maxPower) : undefined,
+      minBrightness: filters.minBrightness ? parseInt(filters.minBrightness) : undefined,
+      maxBrightness: filters.maxBrightness ? parseInt(filters.maxBrightness) : undefined,
+      minPrice: filters.minPrice ? parseFloat(filters.minPrice) : undefined,
+      maxPrice: filters.maxPrice ? parseFloat(filters.maxPrice) : undefined,
+      colorTemperature: filters.color ? parseInt(filters.color) : undefined,
+      shape: filters.shape || undefined,
+    };
 
-    // Types
-    if (filters.types.length > 0 && !filters.types.includes(p.type)) return false;
+    Object.keys(apiParams).forEach(key => apiParams[key] === undefined && delete apiParams[key]);
 
-    // Bases
-    if (filters.bases.length > 0 && !filters.bases.includes(p.base)) return false;
+    dispatch(fetchProducts(apiParams));
+  }, [dispatch, search, filters, page]);
 
-    // Power
-    if (filters.power !== 'any') {
-      const maxPower = parseInt(filters.power);
-      if (p.power > maxPower) return false;
+  useEffect(() => {
+    const categoryQuery = searchParams.get('category');
+    if (categoryQuery && categories.length > 0) {
+      const exists = categories.find(c => c.id === categoryQuery);
+      if (exists) {
+        setFilters(prev => ({ ...prev, category: categoryQuery }));
+      }
     }
+  }, [searchParams, categories]);
 
-    // Colors
-    if (filters.colors.length > 0 && !filters.colors.includes(p.colorTemp)) return false;
+  const currentProducts = products;
+  const totalPages = products.length === itemsPerPage ? page + 1 : page;
 
-    // Brightness
-    if (filters.brightness !== 'any') {
-      const maxBrightness = parseInt(filters.brightness);
-      if (p.brightness > maxBrightness) return false;
-    }
-
-    // Shapes
-    if (filters.shapes.length > 0 && !filters.shapes.includes(p.shape)) return false;
-
-    return true;
-  });
-
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  const currentProducts = filteredProducts.slice((page - 1) * itemsPerPage, page * itemsPerPage);
-
-  // Reset page when filters or search change
   const handleFiltersChange = (newFilters: FilterState) => {
     setFilters(newFilters);
     setPage(1);
@@ -83,16 +99,23 @@ export function CatalogPage() {
   };
 
   return (
-      <Box className="catalog-container">
+      <Box className={`${styles.catalogContainer}`}>
         {/* Left Column: Filters sidebar */}
-        <Box className="catalog-sidebar">
-          <CatalogFilters filters={filters} onChange={handleFiltersChange} />
+        <Box className={`${styles.catalogSidebar}`}>
+          <CatalogFilters
+              filters={filters}
+              onChange={handleFiltersChange}
+              categories={categories}
+              availableBases={facets.bases}
+              availableShapes={facets.shapes}
+              availableColors={facets.colors}
+          />
         </Box>
 
         {/* Right Column: Search + Content */}
-        <Box className="catalog-main">
+        <Box className={`${styles.catalogMain}`}>
           {/* Hero / Header */}
-          <Paper elevation={0} className="catalog-hero">
+          <Paper elevation={0} className={`${styles.catalogHero}`}>
             <Typography variant="h5" color="text.primary" gutterBottom className="bold">
               Энергосберегающие решения
             </Typography>
@@ -103,7 +126,7 @@ export function CatalogPage() {
 
           {/* Search & Categories */}
           <Box className="flex-column" sx={{ gap: 2 }}>
-            <Box className="catalog-tabs">
+            <Box className={`${styles.catalogTabs}`}>
               {[
                 { id: 'all', label: 'Все товары' },
                 { id: 'home', label: 'Дом (E27, E14)' },
@@ -114,18 +137,21 @@ export function CatalogPage() {
                     <Paper
                         key={cat.id}
                         elevation={0}
-                        className={`catalog-tab ${isActive ? 'catalog-tab-active' : ''}`}
+                        className={`catalog-tab ${isActive ? styles.catalogTabActive : ''}`}
                         onClick={() => {
                           if (cat.id === 'all') {
                             setSearchParams({});
                             setFilters({
-                              types: [],
-                              bases: [],
-                              power: 'any',
-                              colors: [],
-                              brightness: 'any',
-                              shapes: [],
-                              purposes: []
+                              category: '',
+                              base: '',
+                              minPower: '',
+                              maxPower: '',
+                              color: '',
+                              minBrightness: '',
+                              maxBrightness: '',
+                              minPrice: '',
+                              maxPrice: '',
+                              shape: ''
                             });
                           } else {
                             setSearchParams({ category: cat.id });
@@ -143,7 +169,7 @@ export function CatalogPage() {
                 placeholder="Поиск: led, e27, 12w..."
                 value={search}
                 onChange={handleSearchChange}
-                className="search-field"
+                className={`${styles.searchField}`}
                 slotProps={{
                   input: {
                     startAdornment: (

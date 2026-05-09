@@ -1,0 +1,58 @@
+.appHeader {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(8px);
+  color: #1f2937 !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+}
+
+.appHeaderBordered {
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+.appHeaderScrolled {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.logoLink {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  font-weight: 800 !important;
+  color: var(--mui-primary) !important;
+  text-decoration: none !important;
+  letter-spacing: -0.5px !important;
+}
+.logoLink svg {
+  color: #3b82f6;
+}
+
+.navLink {
+  color: #1f2937 !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+}
+
+.navLink:hover {
+  color: var(--mui-primary) !important;
+  background-color: #eff6ff !important;
+}
+
+.navLinkActive {
+  color: var(--mui-primary) !important;
+  font-weight: 700 !important;
+  background-color: #eff6ff !important;
+}
+
+.cartIconBtn {
+  background-color: var(--mui-primary) !important;
+  color: white !important;
+  transition: all 0.2s !important;
+}
+
+.cartIconBtn:hover {
+  background-color: #1d4ed8 !important;
+}

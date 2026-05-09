@@ -1,0 +1,14 @@
+.container {
+  margin-top: 32px;
+}
+.reviewCard {
+  padding: 16px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+.formCard {
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}

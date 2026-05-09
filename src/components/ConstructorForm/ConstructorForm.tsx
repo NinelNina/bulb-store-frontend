@@ -1,6 +1,7 @@
 import { 
   Box, Typography, Select, MenuItem, TextField, FormControl, Grid
 } from "@mui/material";
+import styles from './ConstructorForm.module.css';
 
 interface ConstructorFormProps {
   base: string;
@@ -26,8 +27,9 @@ export function ConstructorForm({
   count, setCount
 }: ConstructorFormProps) {
   return (
-    <Grid container spacing={3}>
-      <Grid size={{ xs: 12, sm: 6 }}>
+    <Box className={styles.container}>
+      <Grid container spacing={3}>
+        <Grid size={{ xs: 12, sm: 6 }}>
         <Box>
           <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 'medium', mb: 1 }}>Цоколь:</Typography>
           <Select 
@@ -111,5 +113,6 @@ export function ConstructorForm({
         </Box>
       </Grid>
     </Grid>
+    </Box>
   );
 }

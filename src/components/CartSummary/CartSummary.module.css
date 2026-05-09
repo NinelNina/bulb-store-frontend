@@ -1,0 +1,24 @@
+.summaryBox {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.summaryTotal {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #f3f4f6;
+}
+.summaryTotalLabel {
+  font-weight: 700 !important;
+}
+.summaryTotalValue {
+  font-weight: 800 !important;
+  color: var(--mui-primary) !important;
+}

@@ -15,8 +15,8 @@ import { AdminLoginPage } from "./pages/admin/AdminLoginPage";
 import { AdminDashboardPage } from "./pages/admin/AdminDashboardPage";
 import { AdminOrdersPage } from "./pages/admin/AdminOrdersPage";
 import { AdminCatalogPage } from "./pages/admin/AdminCatalogPage";
-import { AdminRequestsPage } from "./pages/admin/AdminRequestsPage";
-import { CartProvider } from "./context/CartContext";
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 const theme = createTheme({
   palette: {
@@ -34,32 +34,31 @@ const theme = createTheme({
 
 export default function App() {
   return (
-      <ThemeProvider theme={theme}>
-        <CartProvider>
-          <CssBaseline />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<ClientLayout />}>
-                <Route index element={<HomePage />} />
-                <Route path="catalog" element={<CatalogPage />} />
-                <Route path="product/:id" element={<ProductPage />} />
-                <Route path="constructor" element={<ConstructorPage />} />
-                <Route path="cart" element={<CartPage />} />
-                <Route path="request-call" element={<RequestCallPage />} />
-                <Route path="track" element={<TrackOrderPage />} />
-              </Route>
-
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminLoginPage />} />
-                <Route path="dashboard" element={<AdminDashboardPage />} />
-                <Route path="orders" element={<AdminOrdersPage />} />
-                <Route path="catalog" element={<AdminCatalogPage />} />
-                <Route path="requests" element={<AdminRequestsPage />} />
-                <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </CartProvider>
-      </ThemeProvider>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <CssBaseline />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<ClientLayout />}>
+              <Route index element={<HomePage />} />
+              <Route path="catalog" element={<CatalogPage />} />
+              <Route path="product/:id" element={<ProductPage />} />
+              <Route path="constructor" element={<ConstructorPage />} />
+              <Route path="cart" element={<CartPage />} />
+              <Route path="request-call" element={<RequestCallPage />} />
+              <Route path="track" element={<TrackOrderPage />} />
+            </Route>
+            
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminLoginPage />} />
+              <Route path="dashboard" element={<AdminDashboardPage />} />
+              <Route path="orders" element={<AdminOrdersPage />} />
+              <Route path="catalog" element={<AdminCatalogPage />} />
+              <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </ThemeProvider>
   );
 }

@@ -1,14 +1,33 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { mockProducts } from "../data/mock";
+import { useDispatch, useSelector } from "react-redux";
 import { 
-  Box, Grid, Paper 
+  Box, Grid, Paper, CircularProgress, Typography
 } from "@mui/material";
+import { fetchProduct } from "../redux/productActions";
+import { RootState } from "../redux/store";
 import { ProductInfo } from "../components/ProductInfo/ProductInfo";
 import { ProductReviews } from "../components/ProductReviews/ProductReviews";
 
 export function ProductPage() {
   const { id } = useParams();
-  const product = mockProducts.find((p) => p.id === id) || mockProducts[0];
+  const dispatch = useDispatch();
+  const product = useSelector((state: RootState) => state.products.currentProduct);
+  const status = useSelector((state: RootState) => state.products.status);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchProduct(id) as any);
+    }
+  }, [id, dispatch]);
+
+  if (status === 'loading') {
+    return <Box className="flex-center" sx={{ p: 10 }}><CircularProgress /></Box>;
+  }
+
+  if (!product) {
+    return <Box className="flex-center" sx={{ p: 10 }}><Typography>Товар не найден</Typography></Box>;
+  }
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -30,15 +49,13 @@ export function ProductPage() {
             </Box>
           </Grid>
 
-          {/* Info */}
           <Grid size={{ xs: 12, md: 6 }}>
             <ProductInfo product={product} />
           </Grid>
         </Grid>
       </Paper>
 
-      {/* Reviews */}
-      <ProductReviews rating={product.rating} reviewsCount={product.reviewsCount} />
+      <ProductReviews rating={4.8} reviewsCount={25} />
     </Box>
   );
 }

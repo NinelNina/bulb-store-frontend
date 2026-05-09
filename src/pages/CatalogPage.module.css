@@ -1,0 +1,57 @@
+.catalogContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+@media (min-width: 900px) {
+  .catalogContainer {
+    flex-direction: row;
+  }
+}
+.catalogSidebar {
+  width: 100%;
+}
+@media (min-width: 900px) {
+  .catalogSidebar {
+    width: 320px;
+    flex-shrink: 0;
+  }
+}
+.catalogMain {
+  flex-grow: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.catalogHero {
+  padding: 32px !important;
+  background-color: #eff6ff !important;
+  border-radius: 16px !important;
+  border: 1px solid #dbeafe !important;
+}
+.catalogTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.catalogTab {
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+  border: 1px solid #e5e7eb !important;
+  background-color: white !important;
+  color: #374151 !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.2s !important;
+  box-shadow: none !important;
+}
+.catalogTabActive {
+  border-color: var(--mui-primary) !important;
+  background-color: #eff6ff !important;
+  color: var(--mui-primary) !important;
+}
+.searchField {
+  background-color: white !important;
+}

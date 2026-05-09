@@ -1,0 +1,8 @@
+.cartEmptyState {
+  padding: 32px !important;
+  text-align: center;
+  border-radius: 16px !important;
+  border: 2px dashed #d1d5db !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}

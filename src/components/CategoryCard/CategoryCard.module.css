@@ -1,0 +1,27 @@
+.categoryGrid {
+  margin-bottom: 48px !important;
+}
+.categoryCard {
+  height: 100%;
+  padding: 32px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  cursor: pointer;
+  transition: all 0.2s !important;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+.categoryIconWrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: #eff6ff;
+  color: var(--mui-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 24px;
+}

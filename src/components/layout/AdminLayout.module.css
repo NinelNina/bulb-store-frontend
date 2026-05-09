@@ -1,0 +1,46 @@
+.adminLayout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+.adminDrawer {
+  width: 260px;
+  flex-shrink: 0;
+}
+.adminDrawerPaper {
+  width: 260px;
+  box-sizing: border-box;
+  background-color: #0f172a !important;
+  color: white !important;
+}
+.adminSidebarHeader {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.adminNavItemActive {
+  background-color: var(--mui-primary) !important;
+}
+.adminToolbar {
+  background-color: white !important;
+  color: #1f2937 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  box-shadow: none !important;
+}
+.adminMainContainer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.adminMainContent {
+  padding: 24px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+@media (min-width: 600px) {
+  .adminMainContent {
+    padding: 32px;
+  }
+}

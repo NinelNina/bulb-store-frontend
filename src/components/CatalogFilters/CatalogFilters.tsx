@@ -1,121 +1,200 @@
 import {
-    Box, Typography, Checkbox, FormControlLabel, FormGroup, Select, MenuItem, Paper
+    Box, Typography, Radio, RadioGroup, FormControlLabel, TextField, Paper, FormControl
 } from "@mui/material";
+import styles from './CatalogFilters.module.css';
+import { Category } from "../../types";
 
 export interface FilterState {
-    types: string[];
-    bases: string[];
-    power: string;
-    colors: string[];
-    brightness: string;
-    shapes: string[];
-    purposes: string[];
+    category: string;
+    base: string;
+    minPower: string;
+    maxPower: string;
+    color: string;
+    minBrightness: string;
+    maxBrightness: string;
+    minPrice: string;
+    maxPrice: string;
+    shape: string;
 }
 
 interface CatalogFiltersProps {
     filters: FilterState;
     onChange: (newFilters: FilterState) => void;
+    categories?: Category[];
+    availableBases?: string[];
+    availableShapes?: string[];
+    availableColors?: string[];
 }
 
-export function CatalogFilters({ filters, onChange }: CatalogFiltersProps) {
+export function CatalogFilters({
+                                   filters,
+                                   onChange,
+                                   categories = [],
+                                   availableBases = [],
+                                   availableShapes = [],
+                                   availableColors = []
+                               }: CatalogFiltersProps) {
 
-    const handleCheckbox = (category: keyof FilterState, value: string, checked: boolean) => {
-        const list = filters[category] as string[];
-        const newList = checked ? [...list, value] : list.filter(item => item !== value);
-        onChange({ ...filters, [category]: newList });
+    const handleRadio = (category: keyof FilterState, value: string) => {
+        onChange({ ...filters, [category]: value });
     };
 
     return (
-        <Paper elevation={0} className="catalog-filters card-paper">
+        <Paper elevation={0} className={`${styles.catalogFilters} card-paper`}>
             <Typography variant="h6" className="bold mb-3">
                 Фильтры
             </Typography>
 
-            <Box className="filter-section">
-                <Typography variant="body2" color="text.secondary" className="medium filter-label">Назначение:</Typography>
-                <FormGroup className="filter-group">
-                    {["Дом", "Офис", "Производство", "Магазин", "Улица"].map(val => (
-                        <FormControlLabel
-                            key={val}
-                            control={<Checkbox size="small" checked={filters.purposes.includes(val)} onChange={(e) => handleCheckbox("purposes", val, e.target.checked)} />}
-                            label={<Typography variant="body2">{val}</Typography>}
-                        />
-                    ))}
-                </FormGroup>
+            {categories.length > 0 && (
+                <Box className={`${styles.filterSection}`}>
+                    <Typography variant="body2" color="text.secondary" className={`medium ${styles.filterLabel}`}>Категория:</Typography>
+                    <FormControl component="fieldset">
+                        <RadioGroup
+                            value={filters.category}
+                            onChange={(e) => handleRadio("category", e.target.value)}
+                        >
+                            <FormControlLabel value="" control={<Radio size="small" />} label={<Typography variant="body2">Все категории</Typography>} />
+                            {categories.map(cat => (
+                                <FormControlLabel
+                                    key={cat.id}
+                                    value={cat.id}
+                                    control={<Radio size="small" />}
+                                    label={<Typography variant="body2">{cat.name}</Typography>}
+                                />
+                            ))}
+                        </RadioGroup>
+                    </FormControl>
+                </Box>
+            )}
+
+            <Box className={`${styles.filterSection}`}>
+                <Typography variant="body2" color="text.secondary" className={`medium ${styles.filterLabel}`}>Цена (₽):</Typography>
+                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                    <TextField
+                        size="small"
+                        placeholder="От"
+                        value={filters.minPrice}
+                        onChange={e => onChange({ ...filters, minPrice: e.target.value })}
+                        sx={{ bgcolor: 'white' }}
+                    />
+                    <Typography variant="caption">—</Typography>
+                    <TextField
+                        size="small"
+                        placeholder="До"
+                        value={filters.maxPrice}
+                        onChange={e => onChange({ ...filters, maxPrice: e.target.value })}
+                        sx={{ bgcolor: 'white' }}
+                    />
+                </Box>
             </Box>
 
-            <Box className="filter-section">
-                <Typography variant="body2" color="text.secondary" className="medium filter-label">Тип лампочки:</Typography>
-                <FormGroup className="filter-group">
-                    {["LED", "Люминесцентная", "Галогенная"].map(val => (
-                        <FormControlLabel
-                            key={val}
-                            control={<Checkbox size="small" checked={filters.types.includes(val)} onChange={(e) => handleCheckbox("types", val, e.target.checked)} />}
-                            label={<Typography variant="body2">{val}</Typography>}
-                        />
-                    ))}
-                </FormGroup>
+            {availableBases.length > 0 && (
+                <Box className={`${styles.filterSection}`}>
+                    <Typography variant="body2" color="text.secondary" className={`medium ${styles.filterLabel}`}>Цоколь:</Typography>
+                    <FormControl component="fieldset">
+                        <RadioGroup
+                            value={filters.base}
+                            onChange={(e) => handleRadio("base", e.target.value)}
+                        >
+                            <FormControlLabel value="" control={<Radio size="small" />} label={<Typography variant="body2">Любой</Typography>} />
+                            {availableBases.map(val => (
+                                <FormControlLabel
+                                    key={val}
+                                    value={val}
+                                    control={<Radio size="small" />}
+                                    label={<Typography variant="body2">{val}</Typography>}
+                                />
+                            ))}
+                        </RadioGroup>
+                    </FormControl>
+                </Box>
+            )}
+
+            <Box className={`${styles.filterSection}`}>
+                <Typography variant="body2" color="text.secondary" className={`medium ${styles.filterLabel}`}>Мощность (Вт):</Typography>
+                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                    <TextField
+                        size="small"
+                        placeholder="От"
+                        value={filters.minPower}
+                        onChange={e => onChange({ ...filters, minPower: e.target.value })}
+                        sx={{ bgcolor: 'white' }}
+                    />
+                    <Typography variant="caption">—</Typography>
+                    <TextField
+                        size="small"
+                        placeholder="До"
+                        value={filters.maxPower}
+                        onChange={e => onChange({ ...filters, maxPower: e.target.value })}
+                        sx={{ bgcolor: 'white' }}
+                    />
+                </Box>
             </Box>
 
-            <Box className="filter-section">
-                <Typography variant="body2" color="text.secondary" className="medium filter-label">Цоколь:</Typography>
-                <FormGroup className="filter-group">
-                    {["E27", "E14", "GU10", "G13", "GU5.3"].map(val => (
-                        <FormControlLabel
-                            key={val}
-                            control={<Checkbox size="small" checked={filters.bases.includes(val)} onChange={(e) => handleCheckbox("bases", val, e.target.checked)} />}
-                            label={<Typography variant="body2">{val}</Typography>}
-                        />
-                    ))}
-                </FormGroup>
+            {availableColors.length > 0 && (
+                <Box className={`${styles.filterSection}`}>
+                    <Typography variant="body2" color="text.secondary" className={`medium ${styles.filterLabel}`}>Цвет. температура:</Typography>
+                    <FormControl component="fieldset">
+                        <RadioGroup
+                            value={filters.color}
+                            onChange={(e) => handleRadio("color", e.target.value)}
+                        >
+                            <FormControlLabel value="" control={<Radio size="small" />} label={<Typography variant="body2">Любой</Typography>} />
+                            {availableColors.map(val => (
+                                <FormControlLabel
+                                    key={val}
+                                    value={val}
+                                    control={<Radio size="small" />}
+                                    label={<Typography variant="body2">{val}K</Typography>}
+                                />
+                            ))}
+                        </RadioGroup>
+                    </FormControl>
+                </Box>
+            )}
+
+            <Box className={`${styles.filterSection}`}>
+                <Typography variant="body2" color="text.secondary" className={`medium ${styles.filterLabel}`}>Яркость (Лм):</Typography>
+                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                    <TextField
+                        size="small"
+                        placeholder="От"
+                        value={filters.minBrightness}
+                        onChange={e => onChange({ ...filters, minBrightness: e.target.value })}
+                        sx={{ bgcolor: 'white' }}
+                    />
+                    <Typography variant="caption">—</Typography>
+                    <TextField
+                        size="small"
+                        placeholder="До"
+                        value={filters.maxBrightness}
+                        onChange={e => onChange({ ...filters, maxBrightness: e.target.value })}
+                        sx={{ bgcolor: 'white' }}
+                    />
+                </Box>
             </Box>
 
-            <Box className="filter-section">
-                <Typography variant="body2" color="text.secondary" className="medium filter-label">Мощность (Вт):</Typography>
-                <Select size="small" fullWidth value={filters.power} onChange={e => onChange({ ...filters, power: e.target.value })}>
-                    <MenuItem value="any">Любая</MenuItem>
-                    <MenuItem value="10">до 10 Вт</MenuItem>
-                    <MenuItem value="12">до 12 Вт</MenuItem>
-                    <MenuItem value="15">до 15 Вт</MenuItem>
-                    <MenuItem value="100">до 100 Вт</MenuItem>
-                </Select>
-            </Box>
-
-            <Box className="filter-section">
-                <Typography variant="body2" color="text.secondary" className="medium filter-label">Цвет. температура:</Typography>
-                <FormGroup className="filter-group">
-                    {["3000K", "4000K", "5000K"].map(val => (
-                        <FormControlLabel
-                            key={val}
-                            control={<Checkbox size="small" checked={filters.colors.includes(val)} onChange={(e) => handleCheckbox("colors", val, e.target.checked)} />}
-                            label={<Typography variant="body2">{val}</Typography>}
-                        />
-                    ))}
-                </FormGroup>
-            </Box>
-
-            <Box className="filter-section">
-                <Typography variant="body2" color="text.secondary" className="medium filter-label">Яркость (Лм):</Typography>
-                <Select size="small" fullWidth value={filters.brightness} onChange={e => onChange({ ...filters, brightness: e.target.value })}>
-                    <MenuItem value="any">Любая</MenuItem>
-                    <MenuItem value="500">до 500 Лм</MenuItem>
-                    <MenuItem value="1000">до 1000 Лм</MenuItem>
-                    <MenuItem value="1500">до 1500 Лм</MenuItem>
-                </Select>
-            </Box>
-
-            <Box className="filter-section">
-                <Typography variant="body2" color="text.secondary" className="medium filter-label">Форма:</Typography>
-                <FormGroup className="filter-group">
-                    {["A60", "Свеча", "Шар", "Спот", "Трубка"].map(val => (
-                        <FormControlLabel
-                            key={val}
-                            control={<Checkbox size="small" checked={filters.shapes.includes(val)} onChange={(e) => handleCheckbox("shapes", val, e.target.checked)} />}
-                            label={<Typography variant="body2">{val}</Typography>}
-                        />
-                    ))}
-                </FormGroup>
-            </Box>
+            {availableShapes.length > 0 && (
+                <Box className={`${styles.filterSection}`}>
+                    <Typography variant="body2" color="text.secondary" className={`medium ${styles.filterLabel}`}>Форма:</Typography>
+                    <FormControl component="fieldset">
+                        <RadioGroup
+                            value={filters.shape}
+                            onChange={(e) => handleRadio("shape", e.target.value)}
+                        >
+                            <FormControlLabel value="" control={<Radio size="small" />} label={<Typography variant="body2">Любая</Typography>} />
+                            {availableShapes.map(val => (
+                                <FormControlLabel
+                                    key={val}
+                                    value={val}
+                                    control={<Radio size="small" />}
+                                    label={<Typography variant="body2">{val}</Typography>}
+                                />
+                            ))}
+                        </RadioGroup>
+                    </FormControl>
+                </Box>
+            )}
         </Paper>
     );
 }

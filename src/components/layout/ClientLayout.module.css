@@ -1,0 +1,14 @@
+.layoutWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.mainContent {
+  flex-grow: 1;
+}
+.appFooterMain {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  border-top: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+}

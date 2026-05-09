@@ -1,0 +1,10 @@
+.tableHeader {
+  background-color: #f8fafc;
+}
+.tableHeaderCell {
+  font-weight: 700 !important;
+  color: #475569 !important;
+  text-transform: uppercase;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.05em;
+}

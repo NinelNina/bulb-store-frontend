@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Box, Typography, Paper, TextField, Button, Rating, Divider, Alert, Grid } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
+import styles from './ProductReviews.module.css';
+
 
 interface ProductReviewsProps {
   rating: number;
@@ -59,7 +61,7 @@ export function ProductReviews({ rating: initialRating, reviewsCount: initialCou
   };
 
   return (
-    <Box>
+    <Box className={styles.container}>
       <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
         Отзывы и рейтинг
       </Typography>
@@ -78,7 +80,7 @@ export function ProductReviews({ rating: initialRating, reviewsCount: initialCou
 
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {reviews.map((review) => (
-              <Paper key={review.id} elevation={0} sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 2 }}>
+              <Paper key={review.id} elevation={0} className={styles.reviewCard}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                   <Typography sx={{ fontWeight: 'medium', mr: 1 }}>{review.author}</Typography>
                   <Box sx={{ display: 'flex', color: '#fbbf24' }}>
@@ -99,7 +101,7 @@ export function ProductReviews({ rating: initialRating, reviewsCount: initialCou
         </Grid>
 
         <Grid size={{ xs: 12, md: 5 }}>
-          <Paper elevation={0} sx={{ p: 3, border: 1, borderColor: 'grey.200', borderRadius: 2 }}>
+          <Paper elevation={0} className={styles.formCard}>
             <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
               Оставить отзыв
             </Typography>

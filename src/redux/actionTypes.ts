@@ -1,0 +1,18 @@
+export const ADD_TO_CART = 'cart/ADD_TO_CART';
+export const REMOVE_FROM_CART = 'cart/REMOVE_FROM_CART';
+export const UPDATE_QUANTITY = 'cart/UPDATE_QUANTITY';
+export const CLEAR_CART = 'cart/CLEAR_CART';
+
+export const FETCH_PRODUCTS_START = 'products/FETCH_START';
+export const FETCH_PRODUCTS_SUCCESS = 'products/FETCH_SUCCESS';
+export const FETCH_PRODUCT_SUCCESS = 'products/FETCH_SINGLE_SUCCESS';
+export const FETCH_PRODUCTS_FAILURE = 'products/FETCH_FAILURE';
+export const FETCH_LOW_STOCK_SUCCESS = 'products/FETCH_LOW_STOCK_SUCCESS';
+export const FETCH_CATEGORIES_SUCCESS = 'products/FETCH_CATEGORIES_SUCCESS';
+
+export const FETCH_ORDERS_START = 'orders/FETCH_START';
+export const FETCH_ORDERS_SUCCESS = 'orders/FETCH_SUCCESS';
+export const FETCH_ORDERS_FAILURE = 'orders/FETCH_FAILURE';
+export const CREATE_ORDER_SUCCESS = 'orders/CREATE_SUCCESS';
+export const FETCH_ORDER_STATUSES_SUCCESS = 'orders/FETCH_STATUSES_SUCCESS';
+export const FETCH_DELIVERY_TYPES_SUCCESS = 'orders/FETCH_DELIVERY_TYPES_SUCCESS';

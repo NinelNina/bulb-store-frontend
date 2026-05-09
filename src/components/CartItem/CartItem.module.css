@@ -1,0 +1,52 @@
+.cartItemPaper {
+  padding: 16px !important;
+  border-radius: 12px !important;
+  border: 1px solid #e5e7eb !important;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background-color: white !important;
+  box-shadow: none !important;
+}
+.cartItemInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.cartItemImage {
+  width: 64px;
+  height: 64px;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+}
+.cartItemActions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.removeBtn {
+  background-color: #fef2f2 !important;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+.quantityValue {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-left: 1px solid #d1d5db;
+  border-right: 1px solid #d1d5db;
+  min-width: 40px;
+  text-align: center;
+}

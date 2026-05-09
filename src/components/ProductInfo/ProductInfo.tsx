@@ -3,20 +3,11 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useState } from "react";
 import { useCart } from "../../context/CartContext";
+import styles from './ProductInfo.module.css';
+import { Product } from "../../types";
 
 interface ProductInfoProps {
-  product: {
-    id: string;
-    name: string;
-    model: string;
-    price: number;
-    power: number;
-    brightness: number;
-    colorTemp: string;
-    base: string;
-    shape: string;
-    type: string;
-  };
+  product: Product;
 }
 
 export function ProductInfo({ product }: ProductInfoProps) {
@@ -28,76 +19,81 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
-      addToCart({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: ""
-      });
+        addToCart({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: ""
+        });
     }
   };
 
   return (
-      <Box className="product-info-container">
-        <Typography variant="h4" gutterBottom className="product-info-title">
-          {product.name}
+    <Box className={`${styles.productInfoContainer}`}>
+      <Typography variant="h4" gutterBottom className={`${styles.productInfoTitle}`}>
+        {product.name}
+      </Typography>
+      <Typography variant="body1" color="text.secondary" gutterBottom>
+        Артикул: {product.id.split('-')[0].toUpperCase()}
+      </Typography>
+
+      <Paper elevation={0} className="card-paper" sx={{ mt: 4 }}>
+        <Typography variant="subtitle1" gutterBottom className="bold">
+          Цена и покупка
         </Typography>
-        <Typography variant="body1" color="text.secondary" gutterBottom>
-          Модель: {product.model}
-        </Typography>
-
-        <Paper elevation={0} className="card-paper" sx={{ mt: 4 }}>
-          <Typography variant="subtitle1" gutterBottom className="bold">
-            Цена и покупка
-          </Typography>
-
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-            <Typography variant="h5" color="text.primary" className="bold">
-              {product.price} ₽
-            </Typography>
-          </Box>
-
-          <Box className="quantity-picker">
-            <Typography color="text.secondary">Кол-во:</Typography>
-            <Box className="quantity-controls">
-              <IconButton size="small" onClick={handleRemove}><RemoveIcon fontSize="small" /></IconButton>
-              <Box className="quantity-value">
-                {quantity}
-              </Box>
-              <IconButton size="small" onClick={handleAdd}><AddIcon fontSize="small" /></IconButton>
-            </Box>
-          </Box>
-
-          <Button
-              variant="contained"
-              size="large"
-              fullWidth
-              onClick={handleAddToCart}
-          >
-            Добавить в корзину
-          </Button>
-        </Paper>
-
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="subtitle1" gutterBottom className="bold">
-            Характеристики:
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-            • {product.power}W | {product.brightness} Лм | {product.colorTemp}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-            • Цоколь: {product.base}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-            • Форма: {product.shape}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
-            • Тип: {product.type}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            • Гарантия: 24 мес
+        
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+          <Typography variant="h5" color="text.primary" className="bold">
+            {product.price} ₽
           </Typography>
         </Box>
+
+        <Typography variant="body2" sx={{ mb: 3, color: product.quantity === 0 ? 'error.main' : 'success.main', fontWeight: 'medium' }}>
+          {product.quantity > 0 ? `● В наличии: ${product.quantity} шт.` : '◌ Нет в наличии'}
+        </Typography>
+
+        <Box className={`${styles.quantityPicker}`}>
+          <Typography color="text.secondary">Кол-во:</Typography>
+          <Box className={`${styles.quantityControls}`}>
+            <IconButton size="small" onClick={handleRemove}><RemoveIcon fontSize="small" /></IconButton>
+            <Box className={`${styles.quantityValue}`}>
+              {quantity}
+            </Box>
+            <IconButton size="small" onClick={handleAdd}><AddIcon fontSize="small" /></IconButton>
+          </Box>
+        </Box>
+
+        <Button 
+          variant="contained" 
+          size="large" 
+          fullWidth
+          onClick={handleAddToCart}
+          disabled={product.quantity === 0}
+        >
+          {product.quantity > 0 ? 'Добавить в корзину' : 'Нет в наличии'}
+        </Button>
+      </Paper>
+
+      <Box sx={{ mt: 4 }}>
+        <Typography variant="subtitle1" gutterBottom className="bold">
+          Характеристики:
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+          • {product.power}W | {product.brightness} Лм | {product.color_temperature + 'K'}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+          • Цоколь: {product.socket}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+          • Форма: {product.shape}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+          
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          • Гарантия: 24 мес
+        </Typography>
       </Box>
+    </Box>
   );
 }
