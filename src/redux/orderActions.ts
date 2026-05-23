@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { ordersApi as api } from '../services/api';
+import { api } from '../services/api';
 import { Order, ReferenceData } from '../types';
 import {
   FETCH_ORDERS_START,
@@ -7,6 +7,7 @@ import {
   FETCH_ORDERS_FAILURE,
   CREATE_ORDER_SUCCESS,
   FETCH_ORDER_STATUSES_SUCCESS,
+  FETCH_ORDER_PAYMENT_STATUSES_SUCCESS,
   FETCH_DELIVERY_TYPES_SUCCESS,
 } from './actionTypes';
 
@@ -23,7 +24,7 @@ export const fetchOrders = (params?: Record<string, any>) => async (dispatch: Di
       });
       const queryString = queryParams.toString();
       if (queryString) {
-        url += `?${queryString}`;
+        url = `/orders?${queryString}`;
       }
     }
     const response = await api.get<Order[]>(url);
@@ -40,6 +41,35 @@ export const fetchOrderStatuses = () => async (dispatch: Dispatch) => {
     const response = await api.get<ReferenceData[]>('/orders/statuses');
     dispatch({ type: FETCH_ORDER_STATUSES_SUCCESS, payload: response });
     return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const fetchPaymentStatuses = () => async (dispatch: Dispatch) => {
+  try {
+    const response = await api.get<ReferenceData[]>('/orders/payment-statuses');
+    dispatch({ type: FETCH_ORDER_PAYMENT_STATUSES_SUCCESS, payload: response });
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateOrderStatus = (id: string, statusId: number) => async () => {
+  try {
+    return await api.patch(`/orders/${id}/status`, { orderStateId: statusId });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateOrderPayment = (id: string, paymentStatusId: number) => async () => {
+  try {
+    return await api.patch(`/orders/${id}/payment`, { paymentStateId: paymentStatusId });
   } catch (error) {
     console.error(error);
     throw error;

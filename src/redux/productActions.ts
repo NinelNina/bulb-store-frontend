@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { catalogApi as api } from '../services/api';
+import { api } from '../services/api';
 import { Product, Category } from '../types';
 import {
   FETCH_PRODUCTS_START,
@@ -17,29 +17,21 @@ export const fetchProducts = (params?: Record<string, any>) => async (dispatch: 
     if (params) {
       const queryParams = new URLSearchParams();
 
-      const appendParam = (key: string, value: any) => {
-        if (value === undefined || value === null || value === '') return;
-        if (Array.isArray(value)) {
-          value.forEach(v => queryParams.append(key, String(v)));
-        } else {
-          queryParams.append(key, String(value));
-        }
-      };
-
-      appendParam('page', params.page);
-      appendParam('size', params.size);
-      appendParam('q', params.q);
-      appendParam('categoryId', params.categoryId);
-      appendParam('socket', params.socket);
-      appendParam('minPower', params.minPower);
-      appendParam('maxPower', params.maxPower);
-      appendParam('minBrightness', params.minBrightness);
-      appendParam('maxBrightness', params.maxBrightness);
-      appendParam('colorTemperature', params.colorTemperature);
-      appendParam('shape', params.shape);
-      appendParam('minPrice', params.minPrice);
-      appendParam('maxPrice', params.maxPrice);
-      appendParam('sort', params.sort);
+      // Map params to API parameters
+      if (params.page !== undefined) queryParams.append('page', String(params.page));
+      if (params.size !== undefined) queryParams.append('size', String(params.size));
+      if (params.q) queryParams.append('q', params.q);
+      if (params.categoryId) queryParams.append('categoryId', params.categoryId);
+      if (params.socket) queryParams.append('socket', params.socket);
+      if (params.minPower !== undefined) queryParams.append('minPower', String(params.minPower));
+      if (params.maxPower !== undefined) queryParams.append('maxPower', String(params.maxPower));
+      if (params.minBrightness !== undefined) queryParams.append('minBrightness', String(params.minBrightness));
+      if (params.maxBrightness !== undefined) queryParams.append('maxBrightness', String(params.maxBrightness));
+      if (params.colorTemperature !== undefined) queryParams.append('colorTemperature', String(params.colorTemperature));
+      if (params.shape) queryParams.append('shape', params.shape);
+      if (params.minPrice !== undefined) queryParams.append('minPrice', String(params.minPrice));
+      if (params.maxPrice !== undefined) queryParams.append('maxPrice', String(params.maxPrice));
+      if (params.sort) queryParams.append('sort', params.sort);
 
       const queryString = queryParams.toString();
       if (queryString) {
@@ -83,6 +75,69 @@ export const fetchCategories = () => async (dispatch: Dispatch) => {
     const response = await api.get<Category[]>(`/catalog/categories`);
     dispatch({ type: FETCH_CATEGORIES_SUCCESS, payload: response });
     return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const createProduct = (product: Partial<Product>) => async () => {
+  try {
+    return await api.post<Product>('/catalog/products', product);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateProduct = (id: string, product: Partial<Product>) => async () => {
+  try {
+    return await api.patch<Product>(`/catalog/products/${id}`, product);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const deleteProduct = (id: string) => async () => {
+  try {
+    return await api.delete(`/catalog/products/${id}`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateProductStock = (id: string, quantity: number) => async () => {
+  try {
+    return await api.patch(`/catalog/products/${id}/stock`, { quantity });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const createCategory = (category: Partial<Category>) => async () => {
+  try {
+    return await api.post<Category>('/catalog/categories', category);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const updateCategory = (id: string, category: Partial<Category>) => async () => {
+  try {
+    return await api.patch<Category>(`/catalog/categories/${id}`, category);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const deleteCategory = (id: string) => async () => {
+  try {
+    return await api.delete(`/catalog/categories/${id}`);
   } catch (error) {
     console.error(error);
     throw error;
