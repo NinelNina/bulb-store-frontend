@@ -19,15 +19,9 @@ export function AdminDashboardPage() {
   // const preorders = useAppSelector(state => state.admin.preorders);
 
   useEffect(() => {
-    // Today's date in YYYY-MM-DD
-    const today = new Date().toISOString().split('T')[0];
-
     dispatch(fetchOrders()); // Generic fetch for the table
     dispatch(fetchOrderStatuses() as any);
     dispatch(fetchPaymentStatuses() as any);
-    dispatch(fetchOrders({ createdAt: today })); // Re-fetch might overwrite items in current simple reducer,
-    // maybe we should just filter on client for now or add a separate state.
-    // Given the constraints, let's just use what we have and maybe filter.
 
     dispatch(fetchLowStock(10));
     // dispatch(fetchPreorders({ statusId: 1 }));
