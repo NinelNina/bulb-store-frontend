@@ -2,9 +2,9 @@ import { Box, Typography, Paper, Button, IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useState } from "react";
-import { useCart } from "../../context/CartContext";
-import styles from './ProductInfo.module.css';
-import { Product } from "../../types";
+import { useCart } from "../../../../../Итоговое дз/bulb-store-frontend/src/context/CartContext.tsx";
+import styles from '../../../../../Итоговое дз/bulb-store-frontend/src/components/ProductInfo/ProductInfo.module.css';
+import { Product } from "../../../../../Итоговое дз/bulb-store-frontend/src/types.ts";
 
 interface ProductInfoProps {
   product: Product;
@@ -32,9 +32,6 @@ export function ProductInfo({ product }: ProductInfoProps) {
     <Box className={`${styles.productInfoContainer}`}>
       <Typography variant="h4" gutterBottom className={`${styles.productInfoTitle}`}>
         {product.name}
-      </Typography>
-      <Typography variant="body1" color="text.secondary" gutterBottom>
-        Артикул: {product.id.split('-')[0].toUpperCase()}
       </Typography>
 
       <Paper elevation={0} className="card-paper" sx={{ mt: 4 }}>

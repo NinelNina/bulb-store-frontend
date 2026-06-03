@@ -46,7 +46,10 @@ export function ConstructorPage() {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <Paper elevation={0} className="card-paper" sx={{ position: 'sticky', top: 100 }}>
-            <ConstructorSummary total={total} />
+            <ConstructorSummary 
+              total={total} 
+              params={{ base, power, temp, brightness, shape, count }} 
+            />
           </Paper>
         </Grid>
       </Grid>

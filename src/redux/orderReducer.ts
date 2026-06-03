@@ -32,13 +32,13 @@ export const orderReducer = (state = initialState, action: any): OrdersState => 
     case FETCH_ORDERS_START:
       return { ...state, status: 'loading' };
     case FETCH_ORDERS_SUCCESS:
-      return { ...state, status: 'succeeded', items: action.payload };
+      return { ...state, status: 'succeeded', items: Array.isArray(action.payload) ? action.payload : (action.payload?.items || action.payload?.data || []) };
     case FETCH_ORDER_STATUSES_SUCCESS:
-      return { ...state, statuses: action.payload };
+      return { ...state, statuses: Array.isArray(action.payload) ? action.payload : (action.payload?.items || action.payload?.data || []) };
     case FETCH_ORDER_PAYMENT_STATUSES_SUCCESS:
-      return { ...state, paymentStatuses: action.payload };
+      return { ...state, paymentStatuses: Array.isArray(action.payload) ? action.payload : (action.payload?.items || action.payload?.data || []) };
     case FETCH_DELIVERY_TYPES_SUCCESS:
-      return { ...state, deliveryTypes: action.payload };
+      return { ...state, deliveryTypes: Array.isArray(action.payload) ? action.payload : (action.payload?.items || action.payload?.data || []) };
     case FETCH_ORDERS_FAILURE:
       return { ...state, status: 'failed', error: action.payload };
     case CREATE_ORDER_SUCCESS:

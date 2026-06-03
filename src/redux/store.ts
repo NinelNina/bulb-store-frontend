@@ -3,7 +3,7 @@ import { cartReducer } from './cartReducer';
 import { productReducer } from './productReducer';
 import { orderReducer } from './orderReducer';
 import { authReducer } from './authReducer';
-// import { adminReducer } from './adminReducer';
+import { adminReducer } from './adminReducer';
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +11,7 @@ export const store = configureStore({
     products: productReducer,
     orders: orderReducer,
     auth: authReducer,
-    // admin: adminReducer
+    admin: adminReducer
   },
 });
 

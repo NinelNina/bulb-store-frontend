@@ -15,6 +15,7 @@ export interface ProductsState {
   categories: Category[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
+  ratings: Record<string, { rating: number, reviewsCount: number }>;
 }
 
 const initialState: ProductsState = {
@@ -24,6 +25,7 @@ const initialState: ProductsState = {
   categories: [],
   status: 'idle',
   error: null,
+  ratings: {},
 };
 
 export const productReducer = (state = initialState, action: any): ProductsState => {
@@ -31,9 +33,11 @@ export const productReducer = (state = initialState, action: any): ProductsState
     case FETCH_PRODUCTS_START:
       return { ...state, status: 'loading' };
     case FETCH_PRODUCTS_SUCCESS:
-      return { ...state, status: 'succeeded', items: action.payload };
+      return { ...state, status: 'succeeded', items: action.payload.items || action.payload, ratings: action.payload.ratings || state.ratings };
     case FETCH_PRODUCT_SUCCESS:
       return { ...state, status: 'succeeded', currentProduct: action.payload };
+    case 'UPDATE_RATINGS':
+      return { ...state, ratings: { ...state.ratings, ...action.payload } };
     case FETCH_CATEGORIES_SUCCESS:
       return { ...state, categories: action.payload };
     case FETCH_PRODUCTS_FAILURE:

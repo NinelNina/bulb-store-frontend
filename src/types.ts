@@ -15,6 +15,7 @@ export interface Product {
   price: number;
   quantity: number;
   category_id: string;
+  photoUrl?: string;
 }
 
 export interface Order {

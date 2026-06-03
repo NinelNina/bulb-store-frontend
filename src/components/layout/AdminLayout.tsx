@@ -51,7 +51,7 @@ export function AdminLayout() {
     { to: "/admin/dashboard", icon: <DashboardIcon />, label: "Дашборд" },
     { to: "/admin/orders", icon: <ShoppingBagIcon />, label: "Заказы" },
     { to: "/admin/catalog", icon: <InventoryIcon />, label: "Каталог" },
-/*    { to: "/admin/preorders", icon: <PhoneIcon />, label: "Заявки" },*/
+    { to: "/admin/preorders", icon: <PhoneIcon />, label: "Заявки" },
     { to: "/admin/register", icon: <PersonAddIcon />, label: "Регистрация" },
   ];
 

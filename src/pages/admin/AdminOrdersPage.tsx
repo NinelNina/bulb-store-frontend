@@ -2,9 +2,9 @@ import { Box, Typography, CircularProgress } from "@mui/material";
 import { OrdersFilterBar } from "../../components/OrdersFilterBar/OrdersFilterBar";
 import { OrdersTable } from "../../components/OrdersTable/OrdersTable";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import {
-  fetchOrders, fetchOrderStatuses, fetchPaymentStatuses,
-  updateOrderStatus, updateOrderPayment
+import { 
+  fetchOrders, fetchOrderStatuses, fetchPaymentStatuses, 
+  updateOrderStatus, updateOrderPayment 
 } from "../../redux/orderActions";
 import { useEffect } from "react";
 
@@ -44,24 +44,24 @@ export function AdminOrdersPage() {
   };
 
   return (
-      <Box className="flex-column" sx={{ gap: 4 }}>
-        <Typography variant="h5" className="bold">Управление заказами</Typography>
-        <OrdersFilterBar statuses={statuses} onFilter={handleFilter} />
-        {status === 'loading' ? (
-            <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
-              <CircularProgress />
-            </Box>
-        ) : (
-            <OrdersTable
-                orders={orders}
-                showDetails
-                orderStatuses={statuses}
-                paymentStatuses={paymentStatuses}
-                onStatusChange={handleStatusChange}
-                onPaymentChange={handlePaymentChange}
-            />
-        )}
-      </Box>
+    <Box className="flex-column" sx={{ gap: 4 }}>
+      <Typography variant="h5" className="bold">Управление заказами</Typography>
+      <OrdersFilterBar statuses={statuses} onFilter={handleFilter} />
+      {status === 'loading' ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <OrdersTable 
+          orders={orders} 
+          showDetails 
+          orderStatuses={statuses}
+          paymentStatuses={paymentStatuses}
+          onStatusChange={handleStatusChange}
+          onPaymentChange={handlePaymentChange}
+        />
+      )}
+    </Box>
   );
 }
 

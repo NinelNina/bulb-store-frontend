@@ -17,7 +17,6 @@ export const fetchProducts = (params?: Record<string, any>) => async (dispatch: 
     if (params) {
       const queryParams = new URLSearchParams();
 
-      // Map params to API parameters
       if (params.page !== undefined) queryParams.append('page', String(params.page));
       if (params.size !== undefined) queryParams.append('size', String(params.size));
       if (params.q) queryParams.append('q', params.q);
@@ -40,6 +39,24 @@ export const fetchProducts = (params?: Record<string, any>) => async (dispatch: 
     }
     const response = await api.get<Product[]>(url);
     dispatch({ type: FETCH_PRODUCTS_SUCCESS, payload: response });
+
+    if (response.length > 0) {
+      const ids = response.map(p => p.id).join(',');
+      api.get<any[]>(`/reviews/ratings/products?product_ids=${ids}`).then((ratings: any[]) => {
+        const payload: Record<string, {rating: number, reviewsCount: number}> = {};
+        ratings.forEach((r: any) => {
+          const id = r.productId || r.product_id;
+          if (id) {
+            payload[id] = { 
+              rating: r.averageScore || 0, 
+              reviewsCount: r.totalReviews || 0 
+            };
+          }
+        });
+        dispatch({ type: 'UPDATE_RATINGS', payload });
+      }).catch(e => console.error('Failed to load ratings', e));
+    }
+
     return response;
   } catch (error: any) {
     dispatch({ type: FETCH_PRODUCTS_FAILURE, payload: error.message });

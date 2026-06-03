@@ -15,6 +15,7 @@ import { AdminLoginPage } from "./pages/admin/AdminLoginPage";
 import { AdminDashboardPage } from "./pages/admin/AdminDashboardPage";
 import { AdminOrdersPage } from "./pages/admin/AdminOrdersPage";
 import { AdminCatalogPage } from "./pages/admin/AdminCatalogPage";
+import { AdminPreordersPage } from "./pages/admin/AdminPreordersPage";
 import { AdminRegisterPage } from "./pages/admin/AdminRegisterPage";
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
@@ -55,6 +56,7 @@ export default function App() {
                 <Route path="dashboard" element={<AdminDashboardPage />} />
                 <Route path="orders" element={<AdminOrdersPage />} />
                 <Route path="catalog" element={<AdminCatalogPage />} />
+                <Route path="preorders" element={<AdminPreordersPage />} />
                 <Route path="register" element={<AdminRegisterPage />} />
                 <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
               </Route>

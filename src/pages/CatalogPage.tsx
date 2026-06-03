@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchProducts, fetchCategories } from "../redux/productActions";
-import {
+import { 
   Box, Typography, TextField, InputAdornment, Grid, Paper, Pagination
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -92,132 +92,94 @@ export function CatalogPage() {
     setFilters(newFilters);
     setPage(1);
   };
-
+  
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
     setPage(1);
   };
 
   return (
-      <Box className={`${styles.catalogContainer}`}>
-        {/* Left Column: Filters sidebar */}
-        <Box className={`${styles.catalogSidebar}`}>
-          <CatalogFilters
-              filters={filters}
-              onChange={handleFiltersChange}
-              categories={categories}
-              availableBases={facets.bases}
-              availableShapes={facets.shapes}
-              availableColors={facets.colors}
+    <Box className={`${styles.catalogContainer}`}>
+      <Box className={`${styles.catalogSidebar}`}>
+        <CatalogFilters 
+          filters={filters} 
+          onChange={handleFiltersChange} 
+          categories={categories}
+          availableBases={facets.bases}
+          availableShapes={facets.shapes}
+          availableColors={facets.colors}
+        />
+      </Box>
+
+      <Box className={`${styles.catalogMain}`}>
+        <Paper elevation={0} className={`${styles.catalogHero}`}>
+          <Typography variant="h5" color="text.primary" gutterBottom className="bold">
+            Энергосберегающие решения
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Принесите старую лампу → изготовим современный аналог. Работаем с физ. и юр. лицами.
+          </Typography>
+        </Paper>
+
+        <Box className="flex-column" sx={{ gap: 2 }}>
+          <Box className={`${styles.catalogTabs}`}>
+
+          </Box>
+
+          <TextField
+            fullWidth
+            placeholder="Поиск: led, e27, 12w..."
+            value={search}
+            onChange={handleSearchChange}
+            className={`${styles.searchField}`}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon color="action" />
+                  </InputAdornment>
+                ),
+              },
+            }}
           />
         </Box>
 
-        {/* Right Column: Search + Content */}
-        <Box className={`${styles.catalogMain}`}>
-          {/* Hero / Header */}
-          <Paper elevation={0} className={`${styles.catalogHero}`}>
-            <Typography variant="h5" color="text.primary" gutterBottom className="bold">
-              Энергосберегающие решения
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Принесите старую лампу → изготовим современный аналог. Работаем с физ. и юр. лицами.
-            </Typography>
-          </Paper>
-
-          {/* Search & Categories */}
-          <Box className="flex-column" sx={{ gap: 2 }}>
-            <Box className={`${styles.catalogTabs}`}>
-              {[
-                { id: 'all', label: 'Все товары' },
-                { id: 'home', label: 'Дом (E27, E14)' },
-                { id: 'industrial', label: 'Производство (G13)' },
-              ].map(cat => {
-                const isActive = (searchParams.get('category') === cat.id) || (cat.id === 'all' && !searchParams.get('category'));
-                return (
-                    <Paper
-                        key={cat.id}
-                        elevation={0}
-                        className={`catalog-tab ${isActive ? styles.catalogTabActive : ''}`}
-                        onClick={() => {
-                          if (cat.id === 'all') {
-                            setSearchParams({});
-                            setFilters({
-                              category: '',
-                              base: '',
-                              minPower: '',
-                              maxPower: '',
-                              color: '',
-                              minBrightness: '',
-                              maxBrightness: '',
-                              minPrice: '',
-                              maxPrice: '',
-                              shape: ''
-                            });
-                          } else {
-                            setSearchParams({ category: cat.id });
-                          }
-                        }}
-                    >
-                      {cat.label}
-                    </Paper>
-                );
-              })}
-            </Box>
-
-            <TextField
-                fullWidth
-                placeholder="Поиск: led, e27, 12w..."
-                value={search}
-                onChange={handleSearchChange}
-                className={`${styles.searchField}`}
-                slotProps={{
-                  input: {
-                    startAdornment: (
-                        <InputAdornment position="start">
-                          <SearchIcon color="action" />
-                        </InputAdornment>
-                    ),
-                  },
-                }}
-            />
-          </Box>
-
-          <Box>
-            <Typography variant="h6" className="bold mb-3">
-              Каталог товаров
-            </Typography>
-
-            {currentProducts.length > 0 ? (
-                <div style={{ width: '100%' }}>
-                  <Grid container spacing={3}>
-                    {currentProducts.map((product) => (
-                        <Grid size={{ xs: 12, sm: 6, lg: 4, xl: 3 }} key={product.id}>
-                          <ProductCard product={product} />
-                        </Grid>
-                    ))}
+        <Box>
+          <Typography variant="h6" className="bold mb-3">
+            Каталог товаров
+          </Typography>
+          
+          {currentProducts.length > 0 ? (
+            <div style={{ width: '100%' }}>
+              <Grid container spacing={3}>
+                {currentProducts.map((product) => (
+                  <Grid size={{ xs: 12, sm: 6, lg: 4, xl: 3 }} key={product.id}>
+                    <ProductCard product={product} />
                   </Grid>
-                </div>
-            ) : (
-                <Box className="flex-center" sx={{ py: 8, flexDirection: 'column' }}>
-                  <Typography variant="h6" color="text.secondary">По вашему запросу ничего не найдено</Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>Попробуйте изменить фильтры или условия поиска</Typography>
-                </Box>
-            )}
-
-            {totalPages > 1 && (
-                <Box className="flex-center" sx={{ mt: 6 }}>
-                  <Pagination
-                      count={totalPages}
-                      page={page}
-                      onChange={(_, value) => setPage(value)}
-                      color="primary"
-                      size="large"
-                  />
-                </Box>
-            )}
-          </Box>
+                ))}
+              </Grid>
+            </div>
+          ) : (
+            <Box className="flex-center" sx={{ py: 8, flexDirection: 'column' }}>
+              <Typography variant="h6" color="text.secondary">По вашему запросу ничего не найдено</Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>Попробуйте изменить фильтры или условия поиска</Typography>
+            </Box>
+          )}
+          
+          {totalPages > 1 && (
+            <Box className="flex-center" sx={{ mt: 6 }}>
+              <Pagination 
+                count={totalPages} 
+                page={page} 
+                onChange={(_, value) => setPage(value)} 
+                color="primary" 
+                size="large"
+              />
+            </Box>
+          )}
         </Box>
       </Box>
+    </Box>
   );
 }
 

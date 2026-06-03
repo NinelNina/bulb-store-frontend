@@ -41,11 +41,8 @@ export function HomePage() {
       <HeroSection />
 
       <Box className={`${styles.categoryGrid}`}>
-        <Typography variant="h6" className="hero-title">
-          Популярные категории
-        </Typography>
         <Grid container spacing={3}>
-          {categories.slice(0, 3).map((cat) => (
+          {categories.map((cat) => (
             <Grid key={cat.id} size={{ xs: 12, sm: 4 }}>
               <CategoryCard 
                 icon={getIcon(cat.name)} 
@@ -54,16 +51,13 @@ export function HomePage() {
               />
             </Grid>
           ))}
-          {/* Fallback or special item if less than 3 categories */}
-          {categories.length < 3 && (
-            <Grid size={{ xs: 12, sm: 4 }}>
-              <CategoryCard 
-                icon="🔧" 
-                title="На заказ / Реплика" 
-                onClick={() => navigate('/constructor')}
-              />
-            </Grid>
-          )}
+          <Grid size={{ xs: 12, sm: 4 }}>
+            <CategoryCard 
+              icon="🔧" 
+              title="На заказ / Реплика" 
+              onClick={() => navigate('/constructor')}
+            />
+          </Grid>
         </Grid>
       </Box>
     </Box>

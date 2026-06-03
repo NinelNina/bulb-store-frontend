@@ -33,19 +33,26 @@ export function ProductPage() {
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
       <Paper elevation={0} sx={{ p: { xs: 2, md: 4 }, borderRadius: 4 }}>
         <Grid container spacing={6}>
-          {/* Image */}
           <Grid size={{ xs: 12, md: 6 }}>
             <Box sx={{ 
               aspectRatio: '1', bgcolor: 'grey.100', borderRadius: 4,
               display: 'flex', alignItems: 'center', justifyContent: 'center'
             }}>
-              <Box sx={{ 
-                width: 250, height: 250, bgcolor: 'grey.200', borderRadius: 2,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: 'text.secondary'
-              }}>
-                📸 Изображение товара
-              </Box>
+              {product.photoUrl ? (
+                <img 
+                  src={product.photoUrl} 
+                  alt={product.name} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }} 
+                />
+              ) : (
+                <Box sx={{ 
+                  width: 250, height: 250, bgcolor: 'grey.200', borderRadius: 2,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: 'text.secondary'
+                }}>
+                  📸 Изображение товара
+                </Box>
+              )}
             </Box>
           </Grid>
 
@@ -55,7 +62,7 @@ export function ProductPage() {
         </Grid>
       </Paper>
 
-      <ProductReviews rating={4.8} reviewsCount={25} />
+      <ProductReviews productId={product.id} />
     </Box>
   );
 }
